@@ -11,11 +11,13 @@ class Translator:
             'target_lang': str(target_lang)
         }
         if source_lang:
-            payload['source_lang'] = source_lang
+            payload['source_lang'] = str(source_lang)
         if split_sentences:
-            payload['split_sentences'] = preserve_formatting
+            payload['split_sentences'] = split_sentences
+        if preserve_formatting:
+            payload['preserve_formatting'] = preserve_formatting
         if formality:
-            payload['formality'] = formality
+            payload['formality'] = str(formality)
         return self._adapter.get_translated_text(payload)
 
     def usage(self):
