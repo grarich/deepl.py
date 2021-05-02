@@ -5,7 +5,8 @@ class Translator:
     def __init__(self, adapter: Adapter):
         self._adapter = adapter
 
-    def translate(self, text, target_lang, *, source_lang=None, split_sentences=None, preserve_formatting=None, formality=None):
+    def translate(self, text, target_lang, *,
+                  source_lang=None, split_sentences=None, preserve_formatting=None, formality=None):
         payload = {
             'text': text,
             'target_lang': str(target_lang)
@@ -25,4 +26,3 @@ class Translator:
 
     def supported_languages(self):
         return self._adapter.get_supported_languages()
-

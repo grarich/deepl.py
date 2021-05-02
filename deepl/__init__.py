@@ -15,5 +15,16 @@ __version__ = '0.0.1'
 __path__ = __import__('pkgutil').extend_path(__path__, __name__)
 
 from .adapter import RequestsAdapter, AiohttpAdapter
-from .enums import *
+from .enums import SourceLang, TargetLang, SplitSentences, PreserveFormatting, Formality
 from .translator import Translator
+
+__all__ = [
+    'RequestsAdapter',
+    'AiohttpAdapter',
+    'SourceLang',
+    'TargetLang',
+    'SplitSentences',
+    'PreserveFormatting',
+    'Formality',
+    'Translator'
+]
