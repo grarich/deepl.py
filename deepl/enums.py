@@ -1,12 +1,12 @@
 from enum import Enum
 
 
-class StringEnum(Enum):
+class StrEnum(Enum):
     def __str__(self):
         return str(self.value)
 
 
-class SourceLang(StringEnum):
+class SourceLang(StrEnum):
     Bulgarian = 'BG'
     Czech = 'CS'
     Danish = 'DA'
@@ -33,7 +33,7 @@ class SourceLang(StringEnum):
     Chinese = "ZH"
 
 
-class TargetLang(StringEnum):
+class TargetLang(StrEnum):
     Bulgarian = 'BG'
     Czech = 'CS'
     Danish = 'DA'
@@ -74,7 +74,7 @@ class PreserveFormatting(Enum):
     ignore = 2
 
 
-class Formality(Enum):
-    default = 0
-    more = 1
-    less = 2
+class Formality(StrEnum):
+    default = 'default'
+    more = 'more'
+    less = 'less'
