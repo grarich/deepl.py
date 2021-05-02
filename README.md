@@ -1,7 +1,13 @@
 # deepl.py
 
 A Python wrapper for the DeepL API
+  
+[![GitHub license](https://img.shields.io/github/license/grarich123/deepl.py)](https://github.com/grarich123/deepl.py/blob/main/LICENSE)
+[![GitHub issues](https://img.shields.io/github/issues/grarich123/deepl.py)](https://github.com/grarich123/deepl.py/issues)
+[![GitHub forks](https://img.shields.io/github/forks/grarich123/deepl.py)](https://github.com/grarich123/deepl.py/network)
+[![GitHub stars](https://img.shields.io/github/stars/grarich123/deepl.py)](https://github.com/grarich123/deepl.py/stargazers)
 
+  
 # installing  
 Install and update using pip:
 
