@@ -64,7 +64,7 @@ class AiohttpAdapter(Adapter):
 
         async with aiohttp.request(
                 method, url, params=payload, headers=headers) as resp:
-            return await resp.json()
+            return await resp.json(content_type=None)
 
     async def get_translated_text(self, payload):
         data = await self.request('POST', '/translate', payload)
