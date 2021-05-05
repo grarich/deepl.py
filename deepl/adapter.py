@@ -1,7 +1,21 @@
 from abc import ABCMeta, abstractmethod
+import json
 
 import aiohttp
 import requests
+
+from .errors import (
+    BadRequest,
+    Forbidden,
+    HTTPException,
+    NotFound,
+    PayloadTooLarge,
+    URITooLong,
+    TooManyRequests,
+    QuotaExceeded,
+    ServiceUnavailable,
+    InternalServerError
+)
 
 
 class Adapter(metaclass=ABCMeta):
@@ -38,7 +52,34 @@ class RequestsAdapter(Adapter):
         url += self.api_version + path
 
         resp = requests.request(method, url, params=payload, headers=headers)
-        return resp.json()
+        try:
+            data = resp.json()
+        except json.JSONDecodeError:
+            data = None
+        status_code = resp.status_code
+        if 200 <= status_code < 300:
+            return data
+        message = data.get('message', '') if data else ''
+        if status_code == 400:
+            raise BadRequest(resp, message)
+        elif status_code == 403:
+            raise Forbidden(resp, message)
+        elif status_code == 404:
+            raise NotFound(resp, message)
+        elif status_code == 413:
+            raise PayloadTooLarge(resp, message)
+        elif status_code == 414:
+            raise URITooLong(resp, message)
+        elif status_code == 429:
+            raise TooManyRequests(resp, message)
+        elif status_code == 456:
+            raise QuotaExceeded(resp, message)
+        elif status_code == 503:
+            raise ServiceUnavailable(resp, message)
+        elif 500 <= status_code < 600:
+            raise InternalServerError(resp, message)
+        else:
+            raise HTTPException(resp, message)
 
     def get_translated_text(self, payload):
         data = self.request('POST', '/translate', payload)
@@ -64,7 +105,34 @@ class AiohttpAdapter(Adapter):
 
         async with aiohttp.request(
                 method, url, params=payload, headers=headers) as resp:
-            return await resp.json(content_type=None)
+            try:
+                data = await resp.json(content_type=None)
+            except json.JSONDecodeError:
+                data = None
+            status_code = resp.status
+            if 200 <= status_code < 300:
+                return data
+            message = data.get('message', '') if data else ''
+            if status_code == 400:
+                raise BadRequest(resp, message)
+            elif status_code == 403:
+                raise Forbidden(resp, message)
+            elif status_code == 404:
+                raise NotFound(resp, message)
+            elif status_code == 413:
+                raise PayloadTooLarge(resp, message)
+            elif status_code == 414:
+                raise URITooLong(resp, message)
+            elif status_code == 429:
+                raise TooManyRequests(resp, message)
+            elif status_code == 456:
+                raise QuotaExceeded(resp, message)
+            elif status_code == 503:
+                raise ServiceUnavailable(resp, message)
+            elif 500 <= status_code < 600:
+                raise InternalServerError(resp, message)
+            else:
+                raise HTTPException(resp, message)
 
     async def get_translated_text(self, payload):
         data = await self.request('POST', '/translate', payload)
