@@ -20,9 +20,9 @@ class HTTPException(DeepLException):
     status: :class:`int`
         The status code of the HTTP request.
     """
-    def __init__(self, response):
+    def __init__(self, response, messega):
         self.response = response
-        self.message = response.json()
+        self.message = messega or 'No error message was sent from the DeepL API.'
         if isinstance(response, aiohttp.ClientResponse):
             self.status = response.status
         elif isinstance(response, requests.Response):
