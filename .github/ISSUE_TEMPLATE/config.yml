@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: GitHub Community Support
+    about: Please ask and answer questions here.
+    url: https://github.com/grarich123/deepl.py/discussions
+  - name: Discord Server
+    about: Official Discord Server to ask and answer questions here.
+    url: https://discord.gg/bN6hDmuRvH
