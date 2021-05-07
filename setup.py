@@ -1,5 +1,9 @@
 import setuptools
 
+requirements = []
+with open('requirements.txt', 'r') as f:
+    requirements = f.read().splitlines()
+
 with open('README.md', 'r') as f:
     long_description = f.read()
 
@@ -13,6 +17,7 @@ setuptools.setup(
     long_description_content_type='text/markdown',
     url='https://github.com/grarich123/deepl.py',
     packages=setuptools.find_packages(),
+    install_requires=requirements,
     classifiers=[
         'Programming Language :: Python :: 3.8',
         'License :: OSI Approved :: MIT License',
