@@ -3,6 +3,9 @@ from typing import List
 from .adapter import Adapter
 
 
+__all__ = ['Translator']
+
+
 class Translator:
     def __init__(self, adapter: Adapter) -> None:
         self._adapter = adapter

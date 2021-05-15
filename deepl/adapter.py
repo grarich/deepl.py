@@ -10,6 +10,8 @@ from .errors import (BadRequest, Forbidden, HTTPException, InternalServerError,
                      NotFound, PayloadTooLarge, QuotaExceeded,
                      ServiceUnavailable, TooManyRequests, URITooLong)
 
+__all__ = ['Adapter', 'RequestsAdapter', 'AiohttpAdapter']
+
 
 class Adapter(metaclass=ABCMeta):
     def __init__(self, authentication_key: str, *, pro: bool = False) -> None:
