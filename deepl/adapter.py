@@ -83,7 +83,6 @@ class RequestsAdapter(Adapter):
         except json.JSONDecodeError:
             data = None
         return self._check_status(resp.status_code, resp, data)
-        
 
     def get_translated_text(self, payload):
         data = self.request('POST', '/translate', payload)
