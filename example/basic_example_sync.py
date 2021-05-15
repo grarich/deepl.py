@@ -6,7 +6,7 @@ translator = deepl.Translator(deepl.RequestsAdapter('Your API key'))
 
 
 def main():
-    print(translator.translate(text, deepl.TargetLang.Japanese))
+    print(translator.translate(text, target_lang=deepl.TargetLang.Japanese))
 
 
 if __name__ == '__main__':
