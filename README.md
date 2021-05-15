@@ -19,6 +19,7 @@ A simple example.
   
 ```python
 # Sync Sample
+
 import deepl
 
 text = 'I have a pen.'
@@ -35,7 +36,8 @@ if __name__ == '__main__':
 ```
   
 ```python
-# Async Sample
+#Async Sample
+
 import asyncio
 
 import deepl
@@ -48,8 +50,9 @@ translator = deepl.Translator(deepl.AiohttpAdapter('Your API key'))
 async def main():
     print(await translator.translate(text, deepl.TargetLang.Japanese))
 
-loop = asyncio.get_event_loop()
-loop.run_until_complete(main())
+if __name__ == '__main__':
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(main())
 ```
   
 # Thank you to everyone who Helped me (#^^#)
