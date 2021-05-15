@@ -1,5 +1,4 @@
 import json
-
 from abc import ABCMeta, abstractmethod
 from typing import List, Optional, Union
 
@@ -28,6 +27,10 @@ class Adapter(metaclass=ABCMeta):
 
     @abstractmethod
     def get_translated_text(self, payload: dict) -> str:
+        raise NotImplementedError()
+
+    @abstractmethod
+    def get_translated_text_multi(self, payload: dict) -> List[str]:
         raise NotImplementedError()
 
     @abstractmethod
@@ -67,13 +70,12 @@ class Adapter(metaclass=ABCMeta):
 class RequestsAdapter(Adapter):
     def request(self, method: str,
                 path: str, payload: dict = {}, **kwargs) -> Optional[Union[list, dict]]:
-        headers = {'content-type': 'x-www-form-urlencoded'}
         payload['auth_key'] = self.auth_key
 
         url = self.base_url_pro if self.pro else self.base_url_free
         url += self.api_version + path
 
-        resp = requests.request(method, url, params=payload, headers=headers, **kwargs)
+        resp = requests.request(method, url, data=payload, **kwargs)
         try:
             data = resp.json()
         except json.JSONDecodeError:
@@ -83,6 +85,10 @@ class RequestsAdapter(Adapter):
     def get_translated_text(self, payload) -> str:
         data = self.request('POST', '/translate', payload)
         return data['translations'][0]['text']
+
+    def get_translated_text_multi(self, payload: dict) -> List[str]:
+        data = self.request('POST', '/translate', payload)
+        return [s['text'] for s in data['translations']]
 
     def get_usage(self) -> dict:
         data = self.request('POST', '/usage')
@@ -97,14 +103,13 @@ class AiohttpAdapter(Adapter):
 
     async def request(self, method: str,
                       path: str, payload: dict = {}, **kwargs) -> Optional[Union[list, dict]]:
-        headers = {'content-type': 'x-www-form-urlencoded'}
         payload['auth_key'] = self.auth_key
 
         url = self.base_url_pro if self.pro else self.base_url_free
         url += self.api_version + path
 
         async with aiohttp.request(
-                method, url, params=payload, headers=headers, **kwargs) as resp:
+                method, url, data=payload, **kwargs) as resp:
             try:
                 data = await resp.json(content_type=None)
             except json.JSONDecodeError:
@@ -115,6 +120,10 @@ class AiohttpAdapter(Adapter):
     async def get_translated_text(self, payload: dict) -> str:
         data = await self.request('POST', '/translate', payload)
         return data['translations'][0]['text']
+
+    async def get_translated_text_multi(self, payload: dict) -> List[str]:
+        data = await self.request('POST', '/translate', payload)
+        return [s['text'] for s in data['translations']]
 
     async def get_usage(self) -> dict:
         data = await self.request('POST', '/usage')

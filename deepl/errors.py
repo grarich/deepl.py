@@ -1,7 +1,6 @@
 import aiohttp
 import requests
 
-
 __all__ = [
     'DeepLException',
     'HTTPException',
