@@ -9,7 +9,7 @@ with open('README.md', 'r') as f:
 
 setuptools.setup(
     name='deepl.py',
-    version='0.0.4',
+    version='1.0.0',
     author='grarich',
     author_email='grarich123@gmail.com',
     description='A Python wrapper for the DeepL API',
