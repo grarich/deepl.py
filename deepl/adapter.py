@@ -1,5 +1,6 @@
 from abc import ABCMeta, abstractmethod
 import json
+from typing import Union
 
 import aiohttp
 import requests
@@ -42,6 +43,31 @@ class Adapter(metaclass=ABCMeta):
     def get_supported_languages(self):
         raise NotImplementedError()
 
+    def _check_status(self, status_code, response, data) -> Union[dict, list]:
+        if 200 <= status_code < 300:
+            return data
+        message = data.get('message', '') if data else ''
+        if status_code == 400:
+            raise BadRequest(response, message)
+        elif status_code == 403:
+            raise Forbidden(response, message)
+        elif status_code == 404:
+            raise NotFound(response, message)
+        elif status_code == 413:
+            raise PayloadTooLarge(response, message)
+        elif status_code == 414:
+            raise URITooLong(response, message)
+        elif status_code == 429:
+            raise TooManyRequests(response, message)
+        elif status_code == 456:
+            raise QuotaExceeded(response, message)
+        elif status_code == 503:
+            raise ServiceUnavailable(response, message)
+        elif 500 <= status_code < 600:
+            raise InternalServerError(response, message)
+        else:
+            raise HTTPException(response, message)
+
 
 class RequestsAdapter(Adapter):
     def request(self, method, path, payload={}, **kwargs):
@@ -56,30 +82,8 @@ class RequestsAdapter(Adapter):
             data = resp.json()
         except json.JSONDecodeError:
             data = None
-        status_code = resp.status_code
-        if 200 <= status_code < 300:
-            return data
-        message = data.get('message', '') if data else ''
-        if status_code == 400:
-            raise BadRequest(resp, message)
-        elif status_code == 403:
-            raise Forbidden(resp, message)
-        elif status_code == 404:
-            raise NotFound(resp, message)
-        elif status_code == 413:
-            raise PayloadTooLarge(resp, message)
-        elif status_code == 414:
-            raise URITooLong(resp, message)
-        elif status_code == 429:
-            raise TooManyRequests(resp, message)
-        elif status_code == 456:
-            raise QuotaExceeded(resp, message)
-        elif status_code == 503:
-            raise ServiceUnavailable(resp, message)
-        elif 500 <= status_code < 600:
-            raise InternalServerError(resp, message)
-        else:
-            raise HTTPException(resp, message)
+        return self._check_status(resp.status_code, resp, data)
+        
 
     def get_translated_text(self, payload):
         data = self.request('POST', '/translate', payload)
@@ -110,29 +114,7 @@ class AiohttpAdapter(Adapter):
             except json.JSONDecodeError:
                 data = None
             status_code = resp.status
-            if 200 <= status_code < 300:
-                return data
-            message = data.get('message', '') if data else ''
-            if status_code == 400:
-                raise BadRequest(resp, message)
-            elif status_code == 403:
-                raise Forbidden(resp, message)
-            elif status_code == 404:
-                raise NotFound(resp, message)
-            elif status_code == 413:
-                raise PayloadTooLarge(resp, message)
-            elif status_code == 414:
-                raise URITooLong(resp, message)
-            elif status_code == 429:
-                raise TooManyRequests(resp, message)
-            elif status_code == 456:
-                raise QuotaExceeded(resp, message)
-            elif status_code == 503:
-                raise ServiceUnavailable(resp, message)
-            elif 500 <= status_code < 600:
-                raise InternalServerError(resp, message)
-            else:
-                raise HTTPException(resp, message)
+        return self._check_status(status_code, resp, data)
 
     async def get_translated_text(self, payload):
         data = await self.request('POST', '/translate', payload)
