@@ -36,7 +36,7 @@ class HTTPException(DeepLException):
         The status code of the HTTP request.
     """
 
-    def __init__(self, response, messega):
+    def __init__(self, response, messega) -> None:
         self.response = response
         self.message = messega or 'No error message was sent from the DeepL API.'
         if isinstance(response, aiohttp.ClientResponse):
