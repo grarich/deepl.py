@@ -28,7 +28,7 @@ translator = deepl.Translator(deepl.RequestsAdapter('Your API key'))
 
 
 def main():
-    print(translator.translate(text, deepl.TargetLang.Japanese))
+    print(translator.translate(text, target_lang=deepl.TargetLang.Japanese))
 
 
 if __name__ == '__main__':
@@ -48,7 +48,7 @@ translator = deepl.Translator(deepl.AiohttpAdapter('Your API key'))
 
 
 async def main():
-    print(await translator.translate(text, deepl.TargetLang.Japanese))
+    print(await translator.translate(text, target_lang=deepl.TargetLang.Japanese))
 
 if __name__ == '__main__':
     loop = asyncio.get_event_loop()

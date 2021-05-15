@@ -1,6 +1,5 @@
 from enum import Enum
 
-
 __all__ = [
     'SourceLang',
     'TargetLang',
@@ -73,12 +72,12 @@ class TargetLang(StrEnum):
     Chinese = 'ZH'
 
 
-class SplitSentences(Enum):
+class SplitSentences(StrEnum):
     enabled = 0
     disabled = 1
 
 
-class PreserveFormatting(Enum):
+class PreserveFormatting(StrEnum):
     respect = 1
     ignore = 2
 
