@@ -1,17 +1,25 @@
-import json
 from abc import ABCMeta, abstractmethod
-from typing import List, Optional, Union
+import json
 
 import aiohttp
 import requests
 
-from .errors import (BadRequest, Forbidden, HTTPException, InternalServerError,
-                     NotFound, PayloadTooLarge, QuotaExceeded,
-                     ServiceUnavailable, TooManyRequests, URITooLong)
+from .errors import (
+    BadRequest,
+    Forbidden,
+    HTTPException,
+    NotFound,
+    PayloadTooLarge,
+    URITooLong,
+    TooManyRequests,
+    QuotaExceeded,
+    ServiceUnavailable,
+    InternalServerError
+)
 
 
 class Adapter(metaclass=ABCMeta):
-    def __init__(self, authentication_key: str, *, pro: bool = False) -> None:
+    def __init__(self, authentication_key: str, *, pro=False):
         self.base_url_free = 'https://api-free.deepl.com/'
         self.base_url_pro = 'https://api.deepl.com/'
         self.api_version = 'v2'
@@ -19,32 +27,31 @@ class Adapter(metaclass=ABCMeta):
         self.pro = pro
 
     @abstractmethod
-    def request(self, method: str, path: str, payload: dict = {}, **kwargs):
+    def request(self, method, path, payload={}, **kwargs):
         raise NotImplementedError()
 
     @abstractmethod
-    def get_translated_text(self, payload: dict) -> str:
+    def get_translated_text(self, payload):
         raise NotImplementedError()
 
     @abstractmethod
-    def get_usage(self) -> dict:
+    def get_usage(self):
         raise NotImplementedError()
 
     @abstractmethod
-    def get_supported_languages(self) -> List[dict]:
+    def get_supported_languages(self):
         raise NotImplementedError()
 
 
 class RequestsAdapter(Adapter):
-    def request(self, method: str,
-                path: str, payload: dict = {}, **kwargs) -> Optional[Union[list, dict]]:
+    def request(self, method, path, payload={}, **kwargs):
         headers = {'content-type': 'x-www-form-urlencoded'}
         payload['auth_key'] = self.auth_key
 
         url = self.base_url_pro if self.pro else self.base_url_free
         url += self.api_version + path
 
-        resp = requests.request(method, url, params=payload, headers=headers, **kwargs)
+        resp = requests.request(method, url, params=payload, headers=headers)
         try:
             data = resp.json()
         except json.JSONDecodeError:
@@ -74,23 +81,22 @@ class RequestsAdapter(Adapter):
         else:
             raise HTTPException(resp, message)
 
-    def get_translated_text(self, payload) -> str:
+    def get_translated_text(self, payload):
         data = self.request('POST', '/translate', payload)
         return data['translations'][0]['text']
 
-    def get_usage(self) -> dict:
+    def get_usage(self):
         data = self.request('POST', '/usage')
         return data
 
-    def get_supported_languages(self) -> List[dict]:
+    def get_supported_languages(self):
         data = self.request('POST', '/languages')
         return data
 
 
 class AiohttpAdapter(Adapter):
 
-    async def request(self, method: str,
-                      path: str, payload: dict = {}, **kwargs) -> Optional[Union[list, dict]]:
+    async def request(self, method, path, payload={}, **kwargs):
         headers = {'content-type': 'x-www-form-urlencoded'}
         payload['auth_key'] = self.auth_key
 
@@ -98,7 +104,7 @@ class AiohttpAdapter(Adapter):
         url += self.api_version + path
 
         async with aiohttp.request(
-                method, url, params=payload, headers=headers, **kwargs) as resp:
+                method, url, params=payload, headers=headers) as resp:
             try:
                 data = await resp.json(content_type=None)
             except json.JSONDecodeError:
@@ -128,14 +134,14 @@ class AiohttpAdapter(Adapter):
             else:
                 raise HTTPException(resp, message)
 
-    async def get_translated_text(self, payload: dict) -> str:
+    async def get_translated_text(self, payload):
         data = await self.request('POST', '/translate', payload)
         return data['translations'][0]['text']
 
-    async def get_usage(self) -> dict:
+    async def get_usage(self):
         data = await self.request('POST', '/usage')
         return data
 
-    async def get_supported_languages(self) -> List[dict]:
+    async def get_supported_languages(self):
         data = await self.request('POST', '/languages')
         return data

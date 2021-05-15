@@ -1,15 +1,12 @@
-from typing import List
-
 from .adapter import Adapter
 
 
 class Translator:
-    def __init__(self, adapter: Adapter) -> None:
+    def __init__(self, adapter: Adapter):
         self._adapter = adapter
 
     def translate(self, text, target_lang, *,
-                  source_lang=None, split_sentences=None,
-                  preserve_formatting=None, formality=None) -> None:
+                  source_lang=None, split_sentences=None, preserve_formatting=None, formality=None):
         payload = {
             'text': text,
             'target_lang': str(target_lang)
@@ -24,8 +21,8 @@ class Translator:
             payload['formality'] = str(formality)
         return self._adapter.get_translated_text(payload)
 
-    def usage(self) -> dict:
+    def usage(self):
         return self._adapter.get_usage()
 
-    def supported_languages(self) -> List[dict]:
+    def supported_languages(self):
         return self._adapter.get_supported_languages()
