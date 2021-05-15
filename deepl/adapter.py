@@ -1,26 +1,18 @@
-from abc import ABCMeta, abstractmethod
 import json
-from typing import Union
+
+from abc import ABCMeta, abstractmethod
+from typing import List, Optional, Union
 
 import aiohttp
 import requests
 
-from .errors import (
-    BadRequest,
-    Forbidden,
-    HTTPException,
-    NotFound,
-    PayloadTooLarge,
-    URITooLong,
-    TooManyRequests,
-    QuotaExceeded,
-    ServiceUnavailable,
-    InternalServerError
-)
+from .errors import (BadRequest, Forbidden, HTTPException, InternalServerError,
+                     NotFound, PayloadTooLarge, QuotaExceeded,
+                     ServiceUnavailable, TooManyRequests, URITooLong)
 
 
 class Adapter(metaclass=ABCMeta):
-    def __init__(self, authentication_key: str, *, pro=False):
+    def __init__(self, authentication_key: str, *, pro: bool = False) -> None:
         self.base_url_free = 'https://api-free.deepl.com/'
         self.base_url_pro = 'https://api.deepl.com/'
         self.api_version = 'v2'
@@ -28,19 +20,20 @@ class Adapter(metaclass=ABCMeta):
         self.pro = pro
 
     @abstractmethod
-    def request(self, method, path, payload={}, **kwargs):
+    def request(self, method: str,
+                path: str, payload: dict = {}, **kwargs) -> Optional[Union[list, dict]]:
         raise NotImplementedError()
 
     @abstractmethod
-    def get_translated_text(self, payload):
+    def get_translated_text(self, payload: dict) -> str:
         raise NotImplementedError()
 
     @abstractmethod
-    def get_usage(self):
+    def get_usage(self) -> dict:
         raise NotImplementedError()
 
     @abstractmethod
-    def get_supported_languages(self):
+    def get_supported_languages(self) -> List[dict]:
         raise NotImplementedError()
 
     def _check_status(self, status_code, response, data) -> Union[dict, list]:
@@ -70,36 +63,38 @@ class Adapter(metaclass=ABCMeta):
 
 
 class RequestsAdapter(Adapter):
-    def request(self, method, path, payload={}, **kwargs):
+    def request(self, method: str,
+                path: str, payload: dict = {}, **kwargs) -> Optional[Union[list, dict]]:
         headers = {'content-type': 'x-www-form-urlencoded'}
         payload['auth_key'] = self.auth_key
 
         url = self.base_url_pro if self.pro else self.base_url_free
         url += self.api_version + path
 
-        resp = requests.request(method, url, params=payload, headers=headers)
+        resp = requests.request(method, url, params=payload, headers=headers, **kwargs)
         try:
             data = resp.json()
         except json.JSONDecodeError:
             data = None
         return self._check_status(resp.status_code, resp, data)
 
-    def get_translated_text(self, payload):
+    def get_translated_text(self, payload) -> str:
         data = self.request('POST', '/translate', payload)
         return data['translations'][0]['text']
 
-    def get_usage(self):
+    def get_usage(self) -> dict:
         data = self.request('POST', '/usage')
         return data
 
-    def get_supported_languages(self):
+    def get_supported_languages(self) -> List[dict]:
         data = self.request('POST', '/languages')
         return data
 
 
 class AiohttpAdapter(Adapter):
 
-    async def request(self, method, path, payload={}, **kwargs):
+    async def request(self, method: str,
+                      path: str, payload: dict = {}, **kwargs) -> Optional[Union[list, dict]]:
         headers = {'content-type': 'x-www-form-urlencoded'}
         payload['auth_key'] = self.auth_key
 
@@ -107,7 +102,7 @@ class AiohttpAdapter(Adapter):
         url += self.api_version + path
 
         async with aiohttp.request(
-                method, url, params=payload, headers=headers) as resp:
+                method, url, params=payload, headers=headers, **kwargs) as resp:
             try:
                 data = await resp.json(content_type=None)
             except json.JSONDecodeError:
@@ -115,14 +110,14 @@ class AiohttpAdapter(Adapter):
             status_code = resp.status
         return self._check_status(status_code, resp, data)
 
-    async def get_translated_text(self, payload):
+    async def get_translated_text(self, payload: dict) -> str:
         data = await self.request('POST', '/translate', payload)
         return data['translations'][0]['text']
 
-    async def get_usage(self):
+    async def get_usage(self) -> dict:
         data = await self.request('POST', '/usage')
         return data
 
-    async def get_supported_languages(self):
+    async def get_supported_languages(self) -> List[dict]:
         data = await self.request('POST', '/languages')
         return data
