@@ -1,6 +1,9 @@
 from .adapter import Adapter
 
 
+__all__ = ['Translator']
+
+
 class Translator:
     def __init__(self, adapter: Adapter):
         self._adapter = adapter

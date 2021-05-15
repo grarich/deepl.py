@@ -2,6 +2,21 @@ import aiohttp
 import requests
 
 
+__all__ = [
+    'DeepLException',
+    'HTTPException',
+    'BadRequest',
+    'Forbidden',
+    'NotFound',
+    'PayloadTooLarge',
+    'URITooLong',
+    'TooManyRequests',
+    'QuotaExceeded',
+    'ServiceUnavailable',
+    'InternalServerError'
+]
+
+
 class DeepLException(Exception):
     pass
 
@@ -20,6 +35,7 @@ class HTTPException(DeepLException):
     status: :class:`int`
         The status code of the HTTP request.
     """
+
     def __init__(self, response, messega):
         self.response = response
         self.message = messega or 'No error message was sent from the DeepL API.'
