@@ -22,17 +22,19 @@ class DeepLException(Exception):
 
 class HTTPException(DeepLException):
     """Exception raised when an HTTP request fails.
-    Attributes
-    ------------
-    response: Union[:class:`aiohttp.ClientResponse`, :class:`requests.Response`]
-        If you are using the RequestsAdapter,
-        :class:`requests.Response`.
-        If you are using the AiohttpAdapter,
-        :class:`aiohttp.ClientResponse`.
-    message: :class:`str`
-        The Messages returned by DeepL API.
-    status: :class:`int`
-        The status code of the HTTP request.
+
+    Attributes:
+        response (Union[:class:`aiohttp.ClientResponse`, :class:`requests.Response`]):
+            If you are using the RequestsAdapter,
+            :class:`requests.Response`.
+            If you are using the AiohttpAdapter,
+            :class:`aiohttp.ClientResponse`.
+        message (str):
+            The Messages returned by DeepL API.
+        status (int):
+            The status code of the HTTP request.
+
+    Subclass of :exc:`DeepLException`
     """
 
     def __init__(self, response, messega) -> None:
