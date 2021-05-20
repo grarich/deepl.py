@@ -1,4 +1,10 @@
+import re
+
 import setuptools
+
+version = ''
+with open('deepl/__init__.py') as f:
+    version = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', f.read(), re.MULTILINE).group(1)
 
 requirements = []
 with open('requirements.txt', 'r') as f:
@@ -9,7 +15,7 @@ with open('README.md', 'r') as f:
 
 setuptools.setup(
     name='deepl.py',
-    version='1.0.0',
+    version=version,
     author='grarich',
     author_email='grarich123@gmail.com',
     description='A Python wrapper for the DeepL API',

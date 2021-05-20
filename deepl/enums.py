@@ -9,12 +9,7 @@ __all__ = [
 ]
 
 
-class StrEnum(Enum):
-    def __str__(self) -> str:
-        return str(self.value)
-
-
-class SourceLang(StrEnum):
+class SourceLang(Enum):
     Bulgarian = 'BG'
     Czech = 'CS'
     Danish = 'DA'
@@ -41,7 +36,7 @@ class SourceLang(StrEnum):
     Chinese = "ZH"
 
 
-class TargetLang(StrEnum):
+class TargetLang(Enum):
     Bulgarian = 'BG'
     Czech = 'CS'
     Danish = 'DA'
@@ -72,17 +67,17 @@ class TargetLang(StrEnum):
     Chinese = 'ZH'
 
 
-class SplitSentences(StrEnum):
+class SplitSentences(Enum):
     enabled = 0
     disabled = 1
 
 
-class PreserveFormatting(StrEnum):
+class PreserveFormatting(Enum):
     respect = 1
     ignore = 2
 
 
-class Formality(StrEnum):
+class Formality(Enum):
     default = 'default'
     more = 'more'
     less = 'less'
