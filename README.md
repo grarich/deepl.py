@@ -6,6 +6,7 @@ A Python wrapper for the DeepL API
 [![GitHub issues](https://img.shields.io/github/issues/grarich123/deepl.py)](https://github.com/grarich123/deepl.py/issues)
 [![GitHub forks](https://img.shields.io/github/forks/grarich123/deepl.py)](https://github.com/grarich123/deepl.py/network)
 [![GitHub stars](https://img.shields.io/github/stars/grarich123/deepl.py)](https://github.com/grarich123/deepl.py/stargazers)
+[![check](https://github.com/grarich123/deepl.py/actions/workflows/check.yml/badge.svg)](https://github.com/grarich123/deepl.py/actions/workflows/check.yml)
 [![PyPI version](https://badge.fury.io/py/deepl.py.svg)](https://badge.fury.io/py/deepl.py)
 [![Python Versions](https://img.shields.io/pypi/pyversions/deepl.py.svg)](https://pypi.org/project/deepl.py/)
 
