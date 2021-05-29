@@ -3,19 +3,34 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to deepl.py's documentation!
-====================================
+===================
+deepl.py へようこそ
+===================
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+deepl.py はシンプルで使いやすい、非同期処理にも対応したDeepl用のAPIラッパーです。
 
-   deepl
+主な特徴
+========
+- DeepL API をほとんどカバー
+- APIキーを入れればすぐに使える
 
+ここから始めましょう
+====================
 
-Indices and tables
-==================
+- ライブラリの使い方を学ぶ
+   - :doc:`intro` 
+   - :doc:`quickstart`
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+- DeepL翻訳の操作
+   - :doc:`deepl_intro`
+  
+ヘルプ・サポート
+================
+
+- :discord_server:`Discord サーバー <>` で質問する
+- :github_discussions:`Github discussion <>` で質問する
+- :github_issues:`バグトラッカー <>` でバグを報告する
+
+API リファレンス
+================
+- :doc:`deepl`
