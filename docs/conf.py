@@ -37,6 +37,13 @@ extensions = [
     'sphinx.ext.napoleon'
 ]
 
+extlinks = {
+  'discord_server': ('https://discord.gg/dmYUnkRMQx', None),
+  'github_issue': ('https://github.com/grarich123/deepl.py/issues/%s', 'issue %s'),
+  'github_issues': ('https://github.com/grarich123/deepl.py/issues', None),
+  'github_discussions': ('https://github.com/grarich123/deepl.py/discussions', None),
+}
+
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
