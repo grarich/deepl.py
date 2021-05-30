@@ -40,7 +40,7 @@ extensions = [
     'sphinx.ext.intersphinx',
     'sphinx.ext.napoleon',
     'sphinx_rtd_theme',
-    'enum_tools.autoenum' 
+    'enum_tools.autoenum'
 ]
 
 autodoc_typehints = 'description'
