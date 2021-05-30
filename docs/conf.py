@@ -11,6 +11,7 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
 import os
+import re
 import sys
 sys.path.insert(0, os.path.abspath('..'))
 
@@ -21,8 +22,11 @@ project = 'deepl.py'
 copyright = '2021, grarich'
 author = 'grarich'
 
-# The full version, including alpha/beta/rc tags
-release = 'v1.0.0'
+with open('../deepl/__init__.py') as f:
+    version = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', f.read(), re.MULTILINE).group(1)
+
+# The full version, including alpha/beta/rc tags.
+release = version
 
 
 # -- General configuration ---------------------------------------------------
@@ -34,15 +38,21 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.extlinks',
     'sphinx.ext.intersphinx',
-    'sphinx.ext.napoleon'
+    'sphinx.ext.napoleon',
+    'sphinx_rtd_theme',
+    'enum_tools.autoenum' 
 ]
 
+autodoc_typehints = 'description'
+
 extlinks = {
-  'discord_server': ('https://discord.gg/dmYUnkRMQx', None),
-  'github_issue': ('https://github.com/grarich123/deepl.py/issues/%s', 'issue %s'),
-  'github_issues': ('https://github.com/grarich123/deepl.py/issues', None),
-  'github_discussions': ('https://github.com/grarich123/deepl.py/discussions', None),
+    'discord_server': ('https://discord.gg/dmYUnkRMQx', None),
+    'github_issue': ('https://github.com/grarich123/deepl.py/issues/%s', 'issue %s'),
+    'github_issues': ('https://github.com/grarich123/deepl.py/issues', None),
+    'github_discussions': ('https://github.com/grarich123/deepl.py/discussions', None)
 }
+
+intersphinx_mapping = {'python': ('https://docs.python.org/3', None)}
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -58,7 +68,7 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'alabaster'
+html_theme = 'sphinx_rtd_theme'
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,

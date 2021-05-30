@@ -17,6 +17,10 @@ __all__ = [
 
 
 class DeepLException(Exception):
+    """
+    Base exception class for deepl.py Ideally speaking,
+    this could be caught to handle any exceptions thrown from this library.
+    """
     pass
 
 

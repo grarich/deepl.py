@@ -2,48 +2,55 @@
 
 .. _deepl:
 
-deepl package
+API reference
 =============
 
-Submodules
+Translator
 ----------
 
-deepl.adapter module
---------------------
-
-.. automodule:: deepl.adapter
+.. autoclass:: deepl.Translator
    :members:
-   :undoc-members:
-   :show-inheritance:
 
-deepl.enums module
-------------------
 
-.. automodule:: deepl.enums
+RequestsAdapter
+---------------
+
+.. autoclass:: deepl.RequestsAdapter
    :members:
-   :undoc-members:
-   :show-inheritance:
 
-deepl.errors module
+AiohttpAdapter
 -------------------
+
+.. autoclass:: deepl.AiohttpAdapter
+   :members:
+
+
+Enums
+----------
+
+.. autoenum:: deepl.SourceLang
+   :members:
+   :undoc-members:
+
+.. autoenum:: deepl.TargetLang
+   :members:
+   :undoc-members:
+
+.. autoenum:: deepl.SplitSentences
+   :members:
+   :undoc-members:
+
+..autoenum:: deepl.PreserveFormatting
+   :members:
+   :undoc-members:
+
+.. autoenum:: deepl.Formality
+   :members:
+   :undoc-members:
+
+
+Exceptions
+-----------------------
 
 .. automodule:: deepl.errors
    :members:
-   :undoc-members:
-   :show-inheritance:
-
-deepl.translator module
------------------------
-
-.. automodule:: deepl.translator
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: deepl
-   :members:
-   :undoc-members:
-   :show-inheritance:

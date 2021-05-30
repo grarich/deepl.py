@@ -54,7 +54,7 @@
             loop.run_until_complete(main())
 
 最後に、APIキーを入れてアプリケーションを起動します。
-APIキーの取得方法は :doc:`deepl-intro` を参照してください。
+APIキーの取得方法は :doc:`deepl_intro` を参照してください。
 
 それでは実行してみましょう。
 

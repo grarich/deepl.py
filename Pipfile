@@ -14,6 +14,9 @@ twine = "*"
 isort = "*"
 flake8 = "*"
 sphinx = "*"
+sphinx-rtd-theme = "*"
+enum-tools = "*"
+sphinx-toolbox = "*"
 
 [requires]
 python_version = "3.8"

@@ -34,3 +34,11 @@ deepl.py はシンプルで使いやすい、非同期処理にも対応したDe
 API リファレンス
 ================
 - :doc:`deepl`
+
+
+.. toctree::
+   :maxdepth: 2
+   :caption: 目次:
+
+   deepl.rst
+   quickstart.rst

@@ -13,7 +13,13 @@ __all__ = ['Adapter', 'RequestsAdapter', 'AiohttpAdapter']
 
 
 class Adapter(metaclass=ABCMeta):
+    """Base abstract class for requests to the DeepL API."""
     def __init__(self, authentication_key: str, *, pro: bool = False) -> None:
+        """
+        Args:
+            authentication_key (str): API key for DeepL API.
+            pro (bool): Put True if you use DeepL API pro.
+        """
         self.base_url_free = 'https://api-free.deepl.com/'
         self.base_url_pro = 'https://api.deepl.com/'
         self.api_version = 'v2'
@@ -68,6 +74,9 @@ class Adapter(metaclass=ABCMeta):
 
 
 class RequestsAdapter(Adapter):
+    """Adapter for using requests for the DeepL API.
+    Use this adapter if you want to use the Translator synchronously.
+    """
     def request(self, method: str,
                 path: str, payload: dict = {}, **kwargs) -> Optional[Union[list, dict]]:
         payload['auth_key'] = self.auth_key
