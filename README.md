@@ -9,6 +9,7 @@ A Python wrapper for the DeepL API
 [![check](https://github.com/grarich123/deepl.py/actions/workflows/check.yml/badge.svg)](https://github.com/grarich123/deepl.py/actions/workflows/check.yml)
 [![PyPI version](https://badge.fury.io/py/deepl.py.svg)](https://badge.fury.io/py/deepl.py)
 [![Python Versions](https://img.shields.io/pypi/pyversions/deepl.py.svg)](https://pypi.org/project/deepl.py/)
+[![Downloads](https://static.pepy.tech/personalized-badge/deepl-py?period=total&units=international_system&left_color=grey&right_color=orange&left_text=Downloads)](https://pepy.tech/project/deepl-py)
 
   
 # installing  
