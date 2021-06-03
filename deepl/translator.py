@@ -77,10 +77,10 @@ class Translator:
             text (List[str]): Text list to be translated.
             target_lang (TargetLang): The language into which the text should be translated.
             source_lang (Optional[SourceLang]): Language of the text to be translated.
-            split_sentences (Optional[SplitSentences]): 
+            split_sentences (Optional[SplitSentences]):
                 Sets whether the translation engine should first split the input into sentences.
                 This is enabled by default.
-            preserve_formatting (Optional[PreserveFormatting]): 
+            preserve_formatting (Optional[PreserveFormatting]):
                 Sets whether the translation engine should respect the original formatting,
                 even if it would usually correct some aspects.
             formality (Optional[Formality]):
