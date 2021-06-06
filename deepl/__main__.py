@@ -12,6 +12,16 @@ def main():
     parser = argparse.ArgumentParser(prog='deepl', description='CLI tool for deepl.py')
     parser.add_argument('-v', '--version', action='store_true', help='shows the library version.')
     args = parser.parse_args()
+    ascii_art = """
+     #####    #######  #######  ######   ####              ######   ##  ##
+     ## ##    ##       ##       ##  ##   ##                ##  ##   ##  ##
+     ##  ##   ##       ##       ##  ##   ##                ##  ##   ##  ##
+     ##  ##   ######   ######   #####    ##                #####     ####
+     ##  ##   ##       ##       ##       ##   #            ##         ##
+     ## ##    ##       ##       ##       ##  ##     ##     ##         ##
+     #####    #######  #######  ####     #######    ##     ####      ####
+    """
+    print(ascii_art)
     if args.version:
         print(f'- Python v{sys.version}')
         print(f'- deepl.py v{deepl.__version__}')
