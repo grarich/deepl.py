@@ -1,3 +1,4 @@
+import os
 from typing import List
 
 from .adapter import Adapter
@@ -47,6 +48,36 @@ class Translator:
         if formality:
             payload['formality'] = formality.value
         return self._adapter.get_translated_text_multi(payload)
+
+    def upload_translation_file(self, file_path, *, target_lang: TL, file_name: str = None,
+                                source_lang: SL = None, split_sentences: SS = None,
+                                preserve_formatting: PF = None, formality: Formality = None) -> dict:
+        payload = {
+            'target_lang': target_lang.value
+        }
+        if file_name:
+            payload['file_name'] = file_name
+        if source_lang:
+            payload['source_lang'] = source_lang.value
+        if split_sentences:
+            payload['split_sentences'] = split_sentences.value
+        if preserve_formatting:
+            payload['preserve_formatting'] = preserve_formatting.value
+        if formality:
+            payload['formality'] = formality.value
+        return self._adapter.upload_translation_file(payload, open(file_path, 'rb'))
+
+    def check_translation_file(self, document_id: str, document_key: str) -> dict:
+        payload = {
+            'document_key': document_key
+        }
+        return self._adapter.check_translated_file_status(document_id, payload)
+
+    def download_translated_file(self, document_id: str, document_key: str) -> bytes:
+        payload = {
+            'document_key': document_key
+        }
+        return self._adapter.download_translated_file(document_id, payload)
 
     def usage(self) -> dict:
         return self._adapter.get_usage()
