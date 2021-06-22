@@ -48,9 +48,10 @@ class Translator:
             payload['formality'] = formality.value
         return self._adapter.get_translated_text_multi(payload)
 
-    def upload_translation_file(self, file_path, *, target_lang: TL, file_name: str = None,
-                                source_lang: SL = None, split_sentences: SS = None,
-                                preserve_formatting: PF = None, formality: Formality = None) -> dict:
+    def upload_translation_file(self, file_path, *,
+                                target_lang: TL, file_name: str = None, source_lang: SL = None,
+                                split_sentences: SS = None, preserve_formatting: PF = None,
+                                formality: Formality = None) -> dict:
         payload = {
             'target_lang': target_lang.value
         }
