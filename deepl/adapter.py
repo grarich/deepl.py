@@ -1,3 +1,4 @@
+from io import TextIOWrapper
 import json
 from abc import ABCMeta, abstractmethod
 from typing import List, Optional, Union
@@ -31,6 +32,18 @@ class Adapter(metaclass=ABCMeta):
 
     @abstractmethod
     def get_translated_text_multi(self, payload: dict) -> List[str]:
+        raise NotImplementedError()
+
+    @abstractmethod
+    def upload_translation_file(self, payload: dict, file: TextIOWrapper) -> dict:
+        raise NotImplementedError()
+
+    @abstractmethod
+    def check_translated_file_status(self, document_id: str, payload: dict) -> dict:
+        raise NotImplementedError()
+
+    @abstractmethod
+    def download_translated_file(self, document_id: str, payload: dict) -> bytes:
         raise NotImplementedError()
 
     @abstractmethod
@@ -79,7 +92,7 @@ class RequestsAdapter(Adapter):
         try:
             data = resp.json()
         except json.JSONDecodeError:
-            data = None
+            data = resp.content
         return self._check_status(resp.status_code, resp, data)
 
     def get_translated_text(self, payload) -> str:
@@ -89,6 +102,23 @@ class RequestsAdapter(Adapter):
     def get_translated_text_multi(self, payload: dict) -> List[str]:
         data = self.request('POST', '/translate', payload)
         return [s['text'] for s in data['translations']]
+
+    def upload_translation_file(self, payload: dict, file: TextIOWrapper) -> dict:
+        data = self.request(
+            'POST', '/document', payload,
+            files={
+                'file': file
+            }
+        )
+        return data
+
+    def check_translated_file_status(self, document_id: str, payload: dict) -> dict:
+        data = self.request('POST', f'/document/{document_id}', payload)
+        return data
+
+    def download_translated_file(self, document_id, payload: dict) -> bytes:
+        data = self.request('POST', f'/document/{document_id}/result', payload)
+        return data
 
     def get_usage(self) -> dict:
         data = self.request('POST', '/usage')
@@ -113,7 +143,7 @@ class AiohttpAdapter(Adapter):
             try:
                 data = await resp.json(content_type=None)
             except json.JSONDecodeError:
-                data = None
+                data = await resp.read()
             status_code = resp.status
         return self._check_status(status_code, resp, data)
 
@@ -124,6 +154,23 @@ class AiohttpAdapter(Adapter):
     async def get_translated_text_multi(self, payload: dict) -> List[str]:
         data = await self.request('POST', '/translate', payload)
         return [s['text'] for s in data['translations']]
+
+    async def upload_translation_file(self, payload: dict, file: TextIOWrapper) -> dict:
+        data = self.request(
+            'POST', '/document', payload,
+            files={
+                'file': file
+            }
+        )
+        return data
+
+    async def check_translated_file_status(self, document_id: str, payload: dict) -> dict:
+        data = await self.request('POST', f'/document/{document_id}', payload)
+        return data
+
+    async def download_translated_file(self, document_id, payload: dict) -> bytes:
+        data = await self.request('POST', f'/document/{document_id}/result', payload)
+        return data
 
     async def get_usage(self) -> dict:
         data = await self.request('POST', '/usage')
