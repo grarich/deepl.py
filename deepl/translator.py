@@ -80,10 +80,10 @@ class Translator:
         return self._adapter.download_translated_file(document_id, payload)
 
     def translate_xml(self, text, *, target_lang: TL,
-                  source_lang: SL = None, split_sentences: SS = None,
-                  preserve_formatting: PF = None, formality: Formality = None,
-                  outline_detection: int = None, splitting_tags: List[str] = [],
-                  non_splitting_tags: List[str] = [], ignore_tags: List[str] = []) -> str:
+                      source_lang: SL = None, split_sentences: SS = None,
+                      preserve_formatting: PF = None, formality: Formality = None,
+                      outline_detection: int = None, splitting_tags: List[str] = [],
+                      non_splitting_tags: List[str] = [], ignore_tags: List[str] = []) -> str:
         payload = {
             'text': text,
             'tag_handling': 'xml',
