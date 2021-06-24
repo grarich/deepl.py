@@ -70,6 +70,7 @@ class TargetLang(Enum):
 class SplitSentences(Enum):
     enabled = 0
     disabled = 1
+    nonewlines = 'nonewlines'
 
 
 class PreserveFormatting(Enum):
@@ -81,3 +82,10 @@ class Formality(Enum):
     default = 'default'
     more = 'more'
     less = 'less'
+
+
+class FileStatus(Enum):
+    queued = 'queued'
+    translating = 'translating'
+    done = 'done'
+    error = 'error'
